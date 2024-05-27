@@ -2,17 +2,8 @@
 CREATE SCHEMA `platziblog` default character SET utf8;
 USE platziblog; 
 -- ----------------------------------------------------
-
-CREATE TABLE `platziblog`.`categorias`(
-	`id` INT NOT NULL auto_increment,
-    `nombre_categoria` varchar(30) NOT NULL,
-primary key (`id`));
-
-CREATE TABLE `platziblog`.`etiquetas`(
-	`id`INT NOT NULL auto_increment,
-    `nombre_etiqueta`varchar(30) NOT NULL,
-primary key (`id`));
-
+-- TABLAS
+-- ----------------------------------------------------
 CREATE TABLE `platziblog`.`usuarios`(
 	`id` INT NOT NULL auto_increment,
     `login` varchar(30) NOT NULL,
@@ -21,7 +12,19 @@ CREATE TABLE `platziblog`.`usuarios`(
     `email` varchar(40) NOT NULL,
 primary key (`id`),
 UNIQUE INDEX (`email` ASC));
-
+-- ----------------------------------------------------
+-- ----------------------------------------------------
+CREATE TABLE `platziblog`.`categorias`(
+	`id` INT NOT NULL auto_increment,
+    `nombre_categoria` varchar(30) NOT NULL,
+primary key (`id`));
+-- ----------------------------------------------------
+CREATE TABLE `platziblog`.`etiquetas`(
+	`id`INT NOT NULL auto_increment,
+    `nombre_etiqueta`varchar(30) NOT NULL,
+primary key (`id`));
+-- ----------------------------------------------------
+-- ----------------------------------------------------
 CREATE TABLE `platziblog`.`posts`(
 	`id` INT NOT NULL auto_increment,
     `titulo` varchar(130) NOT NULL,
@@ -31,14 +34,17 @@ CREATE TABLE `platziblog`.`posts`(
     `usuario_id` INT NULL,
 	`categoria_id` INT NULL,
 primary key (`id`));
-
+-- ----------------------------------------------------
+-- ----------------------------------------------------
 CREATE TABLE `platziblog`.`comentarios`(
 	`id` INT NOT NULL auto_increment,
     `cuerpo_comentario` TEXT NOT NULL,
     `usuario_id` INT NOT NULL,
     `post_id` INT NOT NULL,
 primary key (`id`));
+-- ----------------------------------------------------
 
+-- ----------------------------------------------------
 ALTER TABLE `platziblog`.`posts`
 ADD INDEX `posts_usuarios_idx` (`usuario_id` ASC);
 ;
