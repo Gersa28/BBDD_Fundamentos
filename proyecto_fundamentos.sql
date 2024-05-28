@@ -4,6 +4,24 @@ USE platziblog;
 -- ----------------------------------------------------
 -- TABLAS
 -- ----------------------------------------------------
+CREATE TABLE `platziblog`.`people`(
+	`person_id` INT NOT NULL AUTO_INCREMENT,
+	`last_name` VARCHAR(255) NULL,
+	`first_name` VARCHAR(255) NULL,
+	`adress` VARCHAR(255) NULL,
+	`city` VARCHAR(255) NULL,
+	PRIMARY KEY (`person_id`)
+);
+INSERT INTO `platziblog`.`people` (`person_id`, `last_name`, `first_name`, `adress`, `city`) 
+VALUES 
+    ('1', 'Vásquez', 'Israel', 'Calle Famosa Num 1', 'México'),
+	('2', 'Hernández', 'Mónica', 'Reforma 222', 'México'),
+	('3', 'Alanis', 'Edgar', 'Central 1', 'Monterrey');
+-- Crear una vista
+CREATE VIEW new_view AS
+SELECT * FROM platziblog.people;
+-- ----------------------------------------------------
+-- ----------------------------------------------------
 CREATE TABLE `platziblog`.`usuarios`(
 	`id` INT NOT NULL auto_increment,
     `login` varchar(30) NOT NULL,
