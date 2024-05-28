@@ -24,8 +24,15 @@ SELECT * FROM platziblog.people;
 DROP VIEW `platziblog`.`new_view`;
 DROP TABLE people; -- Hay que borrar las vistas +relacionadas a esta tabla después o antes.
 -- ----------------------------------------------------
+-- BLOGPOST: TABLAS INDEPENDIENTES
 -- ----------------------------------------------------
-CREATE TABLE `platziblog`.`usuarios`(
+CREATE TABLE `platziblog`.`categorias`( -- (sin llave foránea)
+	`id` INT NOT NULL auto_increment,
+    `nombre_categoria` varchar(30) NOT NULL,
+primary key (`id`));
+-- ----------------------------------------------------
+-- ----------------------------------------------------
+CREATE TABLE `platziblog`.`usuarios`( -- (sin llave foránea)
 	`id` INT NOT NULL auto_increment,
     `login` varchar(30) NOT NULL,
     `password` varchar(32) NOT NULL,
@@ -34,30 +41,26 @@ CREATE TABLE `platziblog`.`usuarios`(
 primary key (`id`),
 UNIQUE INDEX (`email` ASC));
 -- ----------------------------------------------------
--- ----------------------------------------------------
-CREATE TABLE `platziblog`.`categorias`(
-	`id` INT NOT NULL auto_increment,
-    `nombre_categoria` varchar(30) NOT NULL,
-primary key (`id`));
--- ----------------------------------------------------
-CREATE TABLE `platziblog`.`etiquetas`(
+CREATE TABLE `platziblog`.`etiquetas`( -- (sin llave foránea)
 	`id`INT NOT NULL auto_increment,
     `nombre_etiqueta`varchar(30) NOT NULL,
 primary key (`id`));
 -- ----------------------------------------------------
+
+-- BLOGPOST: TABLAS DEPENDIENTES
 -- ----------------------------------------------------
-CREATE TABLE `platziblog`.`posts`(
+CREATE TABLE `platziblog`.`posts`( -- (CON llave foránea)
 	`id` INT NOT NULL auto_increment,
     `titulo` varchar(130) NOT NULL,
     `fecha_publicacion` timestamp null,
     `contenido` TEXT NOT NULL,
     `estatus` char(8) NULL default 'activo',
-    `usuario_id` INT NULL,
+    `usuario_id` INT NOT NULL,
 	`categoria_id` INT NULL,
 primary key (`id`));
 -- ----------------------------------------------------
 -- ----------------------------------------------------
-CREATE TABLE `platziblog`.`comentarios`(
+CREATE TABLE `platziblog`.`comentarios`( -- (CON llave foránea)
 	`id` INT NOT NULL auto_increment,
     `cuerpo_comentario` TEXT NOT NULL,
     `usuario_id` INT NOT NULL,
@@ -65,27 +68,33 @@ CREATE TABLE `platziblog`.`comentarios`(
 primary key (`id`));
 -- ----------------------------------------------------
 
+-- TABLA POSTS
 -- ----------------------------------------------------
-ALTER TABLE `platziblog`.`posts`
-ADD INDEX `posts_usuarios_idx` (`usuario_id` ASC);
+-- Agregamos llaves Foráneas a la tabla posts (a usuarios y categorías)
+ALTER TABLE `platziblog`.`posts` 
+ADD INDEX `posts_usuarios_idx` (`usuario_id` ASC) VISIBLE;
 ;
 ALTER TABLE `platziblog`.`posts` 
-ADD constraint `posts_usuarios`
-	foreign key (`usuario_id`)
-	references `platziblog`.`usuarios` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE cascade;
-    
-ALTER TABLE `platziblog`.`posts`
-ADD INDEX `posts_categorias_idx` (`categoria_id` ASC);
+ADD CONSTRAINT `posts_usuarios`
+  FOREIGN KEY (`usuario_id`)
+  REFERENCES `platziblog`.`usuarios` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+-- ----------------------------------------------------
+ALTER TABLE `platziblog`.`posts` 
+ADD INDEX `posts_categorias_idx` (`categoria_id` ASC) VISIBLE;
 ;
 ALTER TABLE `platziblog`.`posts` 
-ADD constraint `posts_categorias`
-	foreign key (`categoria_id`)
-	references `platziblog`.`categorias` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE no action;
-    
+ADD CONSTRAINT `posts_categorias`
+  FOREIGN KEY (`categoria_id`)
+  REFERENCES `platziblog`.`categorias` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+-- ---------------------------------------------------- 
+
+-- TABLA COMENTARIOS
+-- ----------------------------------------------------   
+-- Agregamos llaves Foránea a la tabla Comentarios (a usuarios y posts)    
 ALTER TABLE `platziblog`.`comentarios`
 ADD INDEX `comentarios_usuario_idx` (`usuario_id` ASC);
 ;
@@ -94,8 +103,8 @@ ADD constraint `comentarios_usuario`
 	foreign key (`usuario_id`)
 	references `platziblog`.`usuarios` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE no action;
-    
+    ON UPDATE NO action;
+-- ---------------------------------------------------- 
 ALTER TABLE `platziblog`.`comentarios`
 ADD INDEX `comentarios_post_idx` (`post_id` ASC);
 ;
@@ -104,14 +113,17 @@ ADD constraint `comentarios_post`
 	foreign key (`post_id`)
 	references `platziblog`.`posts` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE no action;
+    ON UPDATE NO action;
+-- ----------------------------------------------------  
 
+-- TABLAS TRANSITIVAS
+-- ----------------------------------------------------  
 CREATE TABLE `platziblog`.`posts_etiquetas`(
 	`id` INT NOT NULL auto_increment,
     `post_id` INT NOT NULL,
 	`etiqueta_id` INT NOT NULL,
 primary key (`id`));
-
+-- ----------------------------------------------------
 ALTER TABLE `platziblog`.`posts_etiquetas`
 ADD INDEX `postsetiquetas_post_idx` (`post_id` ASC);
 ;
@@ -120,8 +132,8 @@ ADD constraint `postsetiquetas_post`
 	foreign key (`post_id`)
 	references `platziblog`.`posts` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE no action;
-    
+    ON UPDATE NO action;
+-- ----------------------------------------------------    
 ALTER TABLE `platziblog`.`posts_etiquetas`
 ADD INDEX `postsetiquetas_etiquetas_idx` (`etiqueta_id` ASC);
 ;
@@ -130,9 +142,9 @@ ADD constraint `postsetiquetas_etiquetas`
 	foreign key (`etiqueta_id`)
 	references `platziblog`.`etiquetas` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE no action;
-
-USE platziblog;
+    ON UPDATE NO action;
+-- ----------------------------------------------------
+-- ----------------------------------------------------
 
 -- Datos de prueba
 
