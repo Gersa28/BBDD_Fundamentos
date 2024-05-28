@@ -20,6 +20,9 @@ VALUES
 -- Crear una vista
 CREATE VIEW new_view AS
 SELECT * FROM platziblog.people;
+-- Drop
+DROP VIEW `platziblog`.`new_view`;
+DROP TABLE people; -- Hay que borrar las vistas +relacionadas a esta tabla después o antes.
 -- ----------------------------------------------------
 -- ----------------------------------------------------
 CREATE TABLE `platziblog`.`usuarios`(
