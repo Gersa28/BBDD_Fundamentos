@@ -1058,11 +1058,13 @@ SELECT
 	posts.titulo,
     COUNT(*) AS num_etiquetas  -- vamos a contar todo
 FROM posts
-    INNER JOIN posts_etiquetas ON posts.id = posts_etiquetas.post_id  -- Esto nos da la unions entre posts y posts eqituetas
-    INNER JOIN etiquetas ON etiquetas.id = posts_etiquetas.etiqueta_id-- y ahora unimos todo finalmente con la tabla etiquetas
+    INNER JOIN posts_etiquetas ON posts.id = posts_etiquetas.post_id  
+    -- Esto nos da la unions entre posts y posts eqituetas
+    INNER JOIN etiquetas ON etiquetas.id = posts_etiquetas.etiqueta_id
+    -- y ahora unimos todo finalmente con la tabla etiquetas
     -- Estamos uniendo tres tablas.
 GROUP BY posts.id
-ORDER BY num_etiquetas DESC
+ORDER BY num_etiquetas DESC -- primero los que tienen más etiquetas
 ;
 
 -- Ahora queremos ver cuales son esas etiquetas!
@@ -1118,6 +1120,7 @@ ORDER BY cantidad_posts DESC
 LIMIT 3
 ;
 
+--  Qué persona tiene más posts escritos?
 SELECT
 	u.nickname,
     COUNT(*) AS cantidad_posts
