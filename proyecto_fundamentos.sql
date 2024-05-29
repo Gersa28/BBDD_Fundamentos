@@ -593,17 +593,17 @@ ORDER BY Mes_del_Post
 
 /*-----------------------36:(Nested queries)(Queris Anidados)---------------------------*/
 SELECT
-	new_table_projection.date,
+	tabla_del_quey_interno.date,
     COUNT(*) AS post_count
 FROM (  -- Acá vamos a crear una tabla dinámica
-	SELECT 
-		DATE(MIN(fecha_publicacion)) AS date, -- trae una sola fecha, es el que querermos proyectar en el SELECT del padre
-        YEAR(fecha_publicacion) AS post_year
-	FROM posts
-	GROUP BY post_year
-	) AS new_table_projection-- Ahora podemos hacer un FROM de esta SuBTABLA (si o si hay que darle un nombre con 'AS')
-GROUP BY new_table_projection.date
-ORDER BY new_table_projection.date
+		SELECT 
+			DATE(MIN(fecha_publicacion)) AS date, -- trae una sola fecha, es el que querermos proyectar en el SELECT del padre
+			YEAR(fecha_publicacion) AS post_year
+		FROM posts
+		GROUP BY post_year
+	) AS tabla_del_quey_interno-- ACA NOMBREMOS LA TABLA CREADA, Ahora podemos hacer un FROM de esta SuBTABLA (si o si hay que darle un nombre con 'AS')
+GROUP BY tabla_del_quey_interno.date
+ORDER BY tabla_del_quey_interno.date
 ;
 
 SELECT *
