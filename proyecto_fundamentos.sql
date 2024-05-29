@@ -263,8 +263,8 @@ INSERT INTO `posts_etiquetas` (`id`,`post_id`,`etiqueta_id`) VALUES (51,63,14);
 INSERT INTO `posts_etiquetas` (`id`,`post_id`,`etiqueta_id`) VALUES (52,63,17);
 INSERT INTO `posts_etiquetas` (`id`,`post_id`,`etiqueta_id`) VALUES (53,52,19);
 
-
--- CLASE 29 --
+-- -----------------------------------------------------------------------------
+-- CONSULTAS: QUERYS--
 SELECT * -- ESTRELLITA ES todos
 FROM posts
 WHERE YEAR(fecha_publicacion) > '2024';
@@ -272,15 +272,13 @@ WHERE YEAR(fecha_publicacion) > '2024';
 SELECT titulo AS encabezado, fecha_publicacion AS publicado_en, estatus AS estado -- manera de poner ALIAS, se los puede usar en el futuro.
 FROM posts;
 
-SELECT COUNT(*) AS numero_posts
+SELECT COUNT(*) AS numero_de_posts
 FROM posts;
 
--- CLASE 30 --
--- Teoria de conjuntos.
+-- CLASE: Teoria de conjuntos.
+/*ver gráficas en LA PÁGINA DEL CURSO*/
 
-
--- CLASE 31 --
-/*ver gráficas en el apunte*/
+-- LEFT JOIN CON INTERSECCIÓN
 SELECT *
 FROM usuarios
 	LEFT JOIN posts ON usuarios.id = posts.usuario_id; 
@@ -288,7 +286,7 @@ FROM usuarios
 -- Primero traemos los usuarios con o sin posts y luego los posts con 
 -- Se muestra a perezozo que no tiene posts
 
-    
+-- LEFT JOIN SIN INTERSECCIÓN   
 SELECT *
 FROM usuarios
 	LEFT JOIN posts ON usuarios.id = posts.usuario_id
@@ -296,12 +294,14 @@ WHERE posts.usuario_id IS NULL;
 -- Acá dejamos afuera los que sí tienen posts
 -- Invocamos a los usuarios SIN posts
 
+-- RIGHT JOIN CON INTERSECCIÓN
 SELECT *
 FROM usuarios
 	RIGHT JOIN posts ON usuarios.id = posts.usuario_id;
 --  Todos los POsts y solo usuarios con POSTS
 -- 
 
+-- RIGHT JOIN SIN INTERSECCIÓN
 SELECT *
 FROM usuarios
 	RIGHT JOIN posts ON usuarios.id = posts.usuario_id
@@ -317,8 +317,8 @@ FROM usuarios
     -- Solo usuarios con posts y posts con usuarios
     
     
--- UNION Y DIFERENCIA SIMETRICA
--- UNION
+-- UNIÓN Y DIFERENCIA SIMETRICA
+-- UNIÓN
 SELECT * -- todoS LOS DATOS UNIDOS AHORA:
 FROM usuarios
 	LEFT JOIN posts ON usuarios.id = posts.usuario_id
@@ -327,7 +327,7 @@ FROM usuarios
 		FROM usuarios
 		RIGHT JOIN posts ON usuarios.id = posts.usuario_id;
 
--- TODO SIN LA INTERSECCION, DIFERENCIA SIMETRICA
+-- TODO SIN LA INTERSECCION, DIFERENCIA SIMÉTRICA
 -- LO QUE EXISTE EN A PERO NO EN B Y LO QUE EXISTE EN B PERO NO EN A
 SELECT * -- LO CONTRARIO AL INNER JOIN, LOS DATOS NO RELACIONADOS
 FROM usuarios
@@ -343,7 +343,7 @@ FROM usuarios
 -- Cabe mencionar que los operadores LIKE y BETWEEN AND, pueden ser negados con NOT
 SELECT *
 FROM posts
-WHERE id < 50
+WHERE id <= 50
 ;
 
 SELECT *
@@ -358,7 +358,12 @@ WHERE estatus != 'activo'
 
 SELECT *
 FROM posts
-WHERE titulo LIKE '%veterano%'
+WHERE id != 50
+;
+
+SELECT *
+FROM posts
+WHERE titulo LIKE '%veterano%' -- lo que sea antes, lo que sea después, pero que contenga "veterano"
 ;
 -- like nos ayuda cuando no conocemos la cadena de caracteres exacta
 SELECT *
@@ -397,7 +402,7 @@ WHERE id BETWEEN 50 AND 60
 ; -- incluye los extremos 
 
 
-/*-----------------------------33: NULO Y NO NULO ----------------------*/
+/*-----------------------------WHERE NULO Y NO NULO: NULO Y NO NULO ----------------------*/
 SELECT *
 FROM posts
 WHERE usuario_id IS NULL-- vamos a ver los posts sin usuario
