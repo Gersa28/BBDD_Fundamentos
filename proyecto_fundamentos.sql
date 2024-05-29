@@ -424,11 +424,10 @@ WHERE usuario_id IS NOT NULL
 
 /*---------------------------- 34: GROUP BY ----------------------------*/
 
-SELECT 	estatus, -- Columna 1
-		COUNT(*) AS Cantidad_de_Posts -- Columna 2
+SELECT estatus, -- Columna 1
+	COUNT(*) AS Cantidad_de_Posts -- Columna 2
 FROM posts
-;-- cuenta TAMBIEN LOS INACTIVOS
-
+;-- cuenta TAMBIEN LOS INACTIVOS, Da error por no usar la agrupación
 
 SELECT 	estatus, -- Columna 1
 		COUNT(*) AS Cantidad_de_Posts -- Columna 2
@@ -549,7 +548,12 @@ ORDER BY fecha_publicacion -- ASCENDENTE POR DEFECTO
 LIMIT 5
 ;
 
--- HAVING se parece a WHERE
+-- HAVING: se parece a WHERE -- 
+/*La cláusula HAVING es similar a WHERE pero se utiliza para filtrar registros 
+después de aplicar una agregación con GROUP BY.
+Mientras que WHERE filtra filas antes de la agregación, 
+HAVING filtra grupos después de la agregación.*/
+
 SELECT 
 	MONTHNAME(fecha_publicacion) AS Mes_del_Post,
 	estatus,
